@@ -3,13 +3,13 @@ kind: Ingress
 metadata:
   name: myingress
   annotations:
-    nginx.ingress.kubernetes.io/add-base-url: "true"
+    traefik.ingress.kubernetes.io/router.entrypoints: "web"
   labels:
     name: myingress
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik
   rules:
-  - host: demo.test
+  - host: conv.test
     http:
       paths:
       - pathType: Prefix
