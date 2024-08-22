@@ -26,4 +26,4 @@ spec:
           service:
             name: conv-api-clusterip
             port: 
-              number: 3002
+              number: 3000
