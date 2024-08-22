@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pvc
+  name: uploads-pvc
   namespace: homework
 spec:
   storageClassName: "local-path"

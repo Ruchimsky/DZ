@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-deployment
+  namespace: homework
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      components: rabbitmq
+  template:
+    metadata:
+      labels:
+        components: rabbitmq
+    spec:
+      containers:
+      - name: rabbitmq
+        image: rabbitmq:3.13
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "256m"
+        ports:
+          - containerPort: 5672
+        env:
+          - name: RABBITMQ_DEFAULT_USER
+            valueFrom:
+              secretKeyRef:
+                name: conv-secrets
+                key: RABBITMQ_USER
+          - name: RABBITMQ_DEFAULT_PASS
+            valueFrom:
+              secretKeyRef:
+                name: conv-secrets
+                key: RABBITMQ_PASSWORD
+          
+        volumeMounts:
+          - name: rabbitmq-data
+            mountPath: /var/lib/rabbitmq
+            subPath: rabbitmq
+          - name: uploads-data
+            mountPath: /opt/app/uploads
+            subPath: uploads
+
+      volumes:
+        - name: rabbitmq-data
+          persistentVolumeClaim:
+            claimName: rabbitmq-pvc
+        - name: uploads-data
+          persistentVolumeClaim:
+            claimName: uploads-pvc
+      

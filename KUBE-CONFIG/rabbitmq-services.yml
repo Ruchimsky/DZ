@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres-clusterip
+  name: rabbitmq-clusterip
   namespace: homework
 spec:
   type: ClusterIP
   ports:
-    - port: 5432
+    - port: 5672
       protocol: TCP
   selector:
-    components: postgres
+    components: rabbitmq

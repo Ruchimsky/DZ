@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: conv-api-deployment
+  name: converter-deployment
   namespace: homework
 spec:
   replicas: 1
   selector:
     matchLabels:
-      components: backend
+      components: backend2
   template:
     metadata:
       labels:
-        components: backend
+        components: backend2
     spec:
       containers:
-        - name: conv-api
-          image: antonlarichev/conv-api:1.0
+        - name: converter
+          image: antonlarichev/conv-service:1.0
           ports:
-            - containerPort: 3002
+            - containerPort: 3003
           resources:
             limits:
-              memory: "256Mi"
-              cpu: "256m"
+              memory: "512Mi"
+              cpu: "500m"
           env:
             - name: AMQP_USER
               valueFrom:
@@ -37,6 +37,8 @@ spec:
               value: rabbitmq-clusterip
             - name: AMQP_EXCHANGE
               value: exchanger
+            - name: AMQP_QUEUE
+              value: converter
             
             - name: RABBITMQ_URL
               valueFrom:
@@ -47,14 +49,10 @@ spec:
           volumeMounts:
             - name: uploads-volume
               mountPath: /opt/app/uploads
-
       volumes:
         - name: uploads-volume
           persistentVolumeClaim:
             claimName: uploads-pvc
-
-
-      
 
 # DATABASE_URL
 # postgres://user:password@url:5432/db

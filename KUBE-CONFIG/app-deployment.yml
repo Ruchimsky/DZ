@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: conv-app-deployment
+  namespace: homework
 spec:
   replicas: 1
   selector:
@@ -20,4 +21,13 @@ spec:
           resources:
             limits:
               memory: "512Mi"
-              cpu: "1000m"
+              cpu: "500m"
+          volumeMounts:
+            - name: converter-configmap
+              mountPath: /opt/app/config
+              subPath: config
+      
+      volumes:
+        - name: converter-configmap
+          configMap:
+            name: converter-config
