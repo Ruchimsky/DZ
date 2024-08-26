@@ -22,10 +22,13 @@ spec:
             limits:
               memory: "512Mi"
               cpu: "500m"
-          volumeMounts:
-            - name: converter-configmap
-              mountPath: /opt/app/config
-              subPath: config
+          env: 
+            - name: VITE_DOMAIN
+              valueFrom:
+                configMapKeyRef:
+                  name: converter-config
+                  key: VITE_DOMAIN
+
       
       volumes:
         - name: converter-configmap

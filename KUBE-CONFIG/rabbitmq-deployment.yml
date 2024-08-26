@@ -38,15 +38,9 @@ spec:
           - name: rabbitmq-data
             mountPath: /var/lib/rabbitmq
             subPath: rabbitmq
-          - name: uploads-data
-            mountPath: /opt/app/uploads
-            subPath: uploads
 
       volumes:
         - name: rabbitmq-data
           persistentVolumeClaim:
             claimName: rabbitmq-pvc
-        - name: uploads-data
-          persistentVolumeClaim:
-            claimName: uploads-pvc
       

@@ -4,4 +4,4 @@ metadata:
   name: converter-config
   namespace: homework
 data:
-  VITE_DOMAIN: conv.test
+  VITE_DOMAIN: ""
