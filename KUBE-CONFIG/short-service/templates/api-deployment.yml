@@ -1,27 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: conv-api-deployment
-  namespace: homework
+  name: {{ .Values.api.name }}-deployment
+  namespace: {{ .Values.namespace }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.api.replicas }}
   selector:
     matchLabels:
-      components: backend
+      components: {{ .Values.api.components }}
   template:
     metadata:
       labels:
-        components: backend
+        components: {{ .Values.api.components }}
     spec:
       containers:
-        - name: conv-api
-          image: antonlarichev/conv-api:1.0
+        - name: {{ .Values.api.name }}
+          image: "{{ .Values.api.image }}:{{ .Values.api.version }}"
           ports:
-            - containerPort: 3000
+            - containerPort: {{ .Values.api.port }}
           resources:
-            limits:
-              memory: "256Mi"
-              cpu: "256m"
+            limits: {{ .Values.api.limits | toYaml | nindent 14 }}
           env:
             - name: AMQP_USER
               valueFrom:

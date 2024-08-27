@@ -1,27 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: converter-deployment
-  namespace: homework
+  name: {{ .Values.converter.name }}-deployment
+  namespace: {{ .Values.namespace }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.converter.replicas }}
   selector:
     matchLabels:
-      components: backend2
+      components: {{ .Values.converter.backend2 }}
   template:
     metadata:
       labels:
-        components: backend2
+        components: {{ .Values.converter.backend2 }}
     spec:
       containers:
-        - name: converter
-          image: antonlarichev/conv-service:1.0
+        - name: {{ .Values.converter.name }}
+          image: "{{ .Values.converter.image }}:{{ .Values.converter.version }}"
           ports:
-            - containerPort: 3000
+            - containerPort: {{ .Values.converter.containerport }}
           resources:
-            limits:
-              memory: "512Mi"
-              cpu: "500m"
+            limits: {{ .Values.converter.limits | toYaml | nindent 14 }}
           env:
             - name: AMQP_USER
               valueFrom:
