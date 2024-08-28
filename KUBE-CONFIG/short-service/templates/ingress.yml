@@ -19,7 +19,7 @@ spec:
           service:
             name: {{ .Values.app.name }}-clusterip
             port: 
-              number: {{ Values.app.port }}
+              number: {{ .Values.app.port }}
       - pathType: Prefix
         path: "/api"
         backend:

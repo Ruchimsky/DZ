@@ -33,10 +33,10 @@ spec:
                   name: conv-secrets
                   key: RABBITMQ_PASSWORD
           
-        volumeMounts:
-          - name: rabbitmq-data
-            mountPath: /var/lib/rabbitmq
-            subPath: rabbitmq
+          volumeMounts:
+            - name: rabbitmq-data
+              mountPath: /var/lib/rabbitmq
+              subPath: rabbitmq
 
       volumes:
         - name: rabbitmq-data

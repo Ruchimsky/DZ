@@ -3,7 +3,7 @@ namespace: homework
 app:
   name: conv-app
   image: antonlarichev/conv-app
-  version: v1.2
+  version: 1.2
   components: frontend
   port: 80
   replicas: 1
@@ -22,7 +22,7 @@ ingress:
 api:
   name: conv-api
   image: antonlarichev/conv-api
-  version: 1.0
+  version: "1.0"
   components: backend
   port: 3000
   replicas: 1
@@ -33,9 +33,9 @@ api:
 converter:
   name: converter
   image: antonlarichev/conv-service
-  version: 1.0
+  version: "1.0"
   components: backend2
-  containerPort: 3000
+  containerport: 3000
   port: 3003
   replicas: 1
   limits:
