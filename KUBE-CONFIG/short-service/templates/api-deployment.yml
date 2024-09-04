@@ -36,11 +36,10 @@ spec:
             - name: AMQP_EXCHANGE
               value: exchanger
             
-            - name: RABBITMQ_URL
-              valueFrom:
-                secretKeyRef:
-                  name: conv-secrets
-                  key: RABBITMQ_URL
+            {{- range .Values.api.envs }}
+            {{- $data := dict "name" $.Values.api.name "env" . }}
+            {{- include "env.template" $data | indent 12 }}
+            {{- end }}
 
           volumeMounts:
             - name: uploads-volume
