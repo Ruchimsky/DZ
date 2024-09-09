@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myingress
+  namespace: homework
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "web"
+  labels:
+    name: myingress
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: conv.test
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: conv-app-clusterip
+            port: 
+              number: 80
+      - pathType: Prefix
+        path: "/api"
+        backend:
+          service:
+            name: conv-api-clusterip
+            port: 
+              number: 3000
+      - pathType: Prefix
+        path: "/uploads"
+        backend:
+          service:
+            name: conv-api-clusterip
+            port:
+              number: 3000

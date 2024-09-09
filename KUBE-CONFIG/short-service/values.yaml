@@ -1,0 +1,62 @@
+namespace: homework
+
+app:
+  name: conv-app
+  image: antonlarichev/conv-app
+  version: 1.2
+  components: frontend
+  port: 80
+  replicas: 1
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+
+configmap:
+  name: converter-config
+  key: VITE_DOMAIN
+
+ingress:
+  name: myingress
+  host: conv.test
+
+api:
+  name: conv-api
+  image: antonlarichev/conv-api
+  version: "1.0"
+  components: backend
+  port: 3000
+  replicas: 1
+  limits:
+    memory: "256Mi"
+    cpu: "256m"
+  envs: 
+    - RABBITMQ_URL
+
+converter:
+  name: converter
+  image: antonlarichev/conv-service
+  version: "1.0"
+  components: backend2
+  containerport: 3000
+  port: 3003
+  replicas: 1
+  limits:
+    memory: "256Mi"
+    cpu: "256m"
+  envs: 
+    - RABBITMQ_URL    
+  
+
+rabbitmq:
+  name: rabbitmq
+  image: rabbitmq
+  version: 3.13
+  components: rabbitmq
+  port: 5672
+  replicas: 1
+  limits:
+    memory: "128Mi"
+    cpu: "256m"
+
+
+  

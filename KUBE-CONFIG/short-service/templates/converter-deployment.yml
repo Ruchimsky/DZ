@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.converter.name }}-deployment
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.converter.replicas }}
+  selector:
+    matchLabels:
+      components: {{ .Values.converter.components }}
+  template:
+    metadata:
+      labels:
+        components: {{ .Values.converter.components }}
+    spec:
+      containers:
+        - name: {{ .Values.converter.name }}
+          image: "{{ .Values.converter.image }}:{{ .Values.converter.version }}"
+          ports:
+            - containerPort: {{ .Values.converter.containerport }}
+          resources:
+            limits: {{ .Values.converter.limits | toYaml | nindent 14 }}
+          env:
+            - name: AMQP_USER
+              valueFrom:
+                secretKeyRef:
+                  name: conv-secrets
+                  key: AMQP_USER
+            - name: AMQP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: conv-secrets
+                  key: AMQP_PASSWORD
+            - name: AMQP_HOSTNAME
+              value: rabbitmq-clusterip
+            - name: AMQP_EXCHANGE
+              value: exchanger
+            - name: AMQP_QUEUE
+              value: converter
+            
+            {{- range .Values.api.envs }}
+            {{- $data := dict "name" $.Values.api.name "env" . }}
+            {{- include "env.template" $data | indent 12 }}
+            {{- end }}
+
+          volumeMounts:
+            - name: uploads-volume
+              mountPath: /opt/app/uploads
+      volumes:
+        - name: uploads-volume
+          persistentVolumeClaim:
+            claimName: uploads-pvc
+
+# DATABASE_URL
+# postgres://user:password@url:5432/db
+# postgresql://demo:demo@postgres-clusterip:5432/demo
+
+# RABBIT_URL
+# amqp://username:password@host:port
+# amqp://demo:demo@rabbitmq-clusterip:5672

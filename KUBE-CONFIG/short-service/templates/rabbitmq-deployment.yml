@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.rabbitmq.name }}-deployment
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      components: {{ .Values.rabbitmq.components }}
+  template:
+    metadata:
+      labels:
+        components: {{ .Values.rabbitmq.components }}
+    spec:
+      containers:
+        - name: {{ .Values.rabbitmq.name }}
+          image: "{{ .Values.rabbitmq.image }}:{{ .Values.rabbitmq.version }}"
+          ports:
+            - containerPort: {{ .Values.rabbitmq.port }}
+          resources:
+            limits: {{ .Values.rabbitmq.limits | toYaml | nindent 14 }}
+
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: conv-secrets
+                  key: RABBITMQ_USER
+            - name: RABBITMQ_DEFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: conv-secrets
+                  key: RABBITMQ_PASSWORD
+          
+          volumeMounts:
+            - name: rabbitmq-data
+              mountPath: /var/lib/rabbitmq
+              subPath: rabbitmq
+
+      volumes:
+        - name: rabbitmq-data
+          persistentVolumeClaim:
+            claimName: rabbitmq-pvc
+      
