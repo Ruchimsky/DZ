@@ -7,11 +7,11 @@ spec:
   replicas: {{ .Values.converter.replicas }}
   selector:
     matchLabels:
-      components: {{ .Values.converter.backend2 }}
+      components: {{ .Values.converter.components }}
   template:
     metadata:
       labels:
-        components: {{ .Values.converter.backend2 }}
+        components: {{ .Values.converter.components }}
     spec:
       containers:
         - name: {{ .Values.converter.name }}

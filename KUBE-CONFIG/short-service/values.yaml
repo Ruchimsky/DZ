@@ -57,6 +57,6 @@ rabbitmq:
   limits:
     memory: "128Mi"
     cpu: "256m"
-  user: demo 
-  password: demo
+
+
   

@@ -1,1 +1,6 @@
 Вы успешно установили приложение {{ .Release.Name }} {{ .Chart.Version }}
+Спасибо за установку {{ .Chart.Name }}.
+Ваше приложение теперь доступно по адресу:
+  http://{{ .Values.ingress.host }}/
+Чтобы проверить состояние приложения, выполните:
+  kubectl get pods -n {{ .Release.Namespace }}
