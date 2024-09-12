@@ -58,5 +58,8 @@ rabbitmq:
     memory: "128Mi"
     cpu: "256m"
 
+data:
+  user: demo
+  password: demo
 
   
